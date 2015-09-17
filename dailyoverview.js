@@ -20,8 +20,17 @@ module.exports = function () {
 	var newLine = "\r\n";
 	var tableHeader = "Post Title | Author | Comments";
 	tableHeader += newLine + ":---|:--:|---:";
-	var postTitle = "Daily Sister Subreddit Overview for " + yesterday.tz("America/Toronto").format("MMM Do YYYY");
-
+	var postTitle = "Toronto Daily - " + yesterday.tz("America/Toronto").format("MMM Do YYYY");
+	var postBeforeText = "#Welcome to the Daily Toronto.";
+	postBeforeText += newLine + newLine + "This thread serves two purposes:";
+	postBeforeText += newLine + newLine + "**1)** To collect and make visible new posts in smaller Toronto based subreddits.";
+	postBeforeText += newLine + newLine + "Feel free to visit, comment and be generally helpful in posts indexed below. Please also remember to stay on your best behaviour when travelling outside of /r/toronto.";
+	postBeforeText += newLine + newLine + "------";
+	postBeforeText += newLine + newLine + "**2)** To act as a general off-topic conversation hub for the day.";
+	postBeforeText += newLine + newLine + "To that end, use this thread to talk about whatever is on your mind, regardless of whether or not it's related to Toronto.";
+	postBeforeText += newLine + newLine + "No matter where you're posting, please remember to be excellent to each other.";
+	postBeforeText += newLine + newLine + "-----";
+	var postAfterText = "-----" + newLine + newLine + "*I am a bot, and this post was generated automatically. Please [contact the moderators of this subreddit](https://www.reddit.com/message/compose/?to=/r/toronto) if you have any questions or concerns.*";
 
 	var generatePostTable = function (subreddit, posts) {
 		var postText = "";
@@ -98,10 +107,11 @@ module.exports = function () {
 					callback();
 				},
 				function (callback) {
+					var postData = postBeforeText + newLine + newLine + postBody + newLine + newLine + postAfterText;
 					var newPost = {
 						"kind": "self",
-						"sr": "toronto2",
-						"text": postBody,
+						"sr": "toronto",
+						"text": postData,
 						"title": postTitle,
 						"api_type": "json",
 						"sendReplies": "false"
@@ -125,7 +135,7 @@ module.exports = function () {
 											
 											var yesterstream = fs.createWriteStream("yesterday");
 											yesterstream.once('open', function (fd) {
-												yesterstream.write(moment.utc(yesterday.add(1, 'days')).format('x'));
+												yesterstream.write(moment.utc(yesterday).format('X'));
 												yesterstream.end();
 											});
 										});
