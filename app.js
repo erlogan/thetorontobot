@@ -7,7 +7,7 @@ var yesterday;
 
 var redditPollingLoop = function () {
 	var utcDate = fs.readFileSync("yesterday", "utf-8");
-	yesterday = moment.utc(moment.unix(utcDate));
+	yesterday = moment.utc(moment.unix(utcDate)).tz("America/Toronto");
 	if (today.isAfter(yesterday.tz("America/Toronto"), 'day'))
 		dailyOverview();
 	else
