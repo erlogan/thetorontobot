@@ -11,7 +11,7 @@ var redditPollingLoop = function () {
 	if (today.isAfter(yesterday.tz("America/Toronto"), 'day'))
 		dailyOverview();
 	else
-		console.log('Not next day. Waiting 5min.');
+		console.log(moment.tz().format("America/Toronto") +  ': Not next day. Waiting 5min. - Yesterday: ' + yesterday.format() + ' Today: ' + today.format());
 	setTimeout(redditPollingLoop, 1000 * 60 * 5); //5min
 };
 
