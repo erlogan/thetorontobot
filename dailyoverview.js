@@ -114,7 +114,7 @@ module.exports = function () {
 						"text": postData,
 						"title": postTitle,
 						"api_type": "json",
-						"sendReplies": "false"
+						"sendReplies": false
 					}
 					reddit('/api/submit').post(newPost).then(function (response) {
 						if (response.json.errors.length > 0)
