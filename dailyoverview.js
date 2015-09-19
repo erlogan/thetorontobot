@@ -135,7 +135,7 @@ module.exports = function () {
 											
 											var yesterstream = fs.createWriteStream("yesterday");
 											yesterstream.once('open', function (fd) {
-												yesterstream.write(moment.utc(yesterday).format('X'));
+												yesterstream.write(moment.utc().format('X'));
 												yesterstream.end();
 											});
 										});
