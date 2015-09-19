@@ -2,10 +2,11 @@ var moment = require('moment-timezone');
 var fs = require('fs');
 var dailyOverview = require('./dailyoverview.js');
 
-var today = moment().tz("America/Toronto");
+var today;
 var yesterday;
 
 var redditPollingLoop = function () {
+	today = moment().tz("America/Toronto");
 	var utcDate = fs.readFileSync("yesterday", "utf-8");
 	yesterday = moment.utc(moment.unix(utcDate)).tz("America/Toronto");
 	if (today.isAfter(yesterday.tz("America/Toronto"), 'day'))
