@@ -3,6 +3,7 @@ var moment = require('moment-timezone');
 var async = require('async');
 var fs = require('fs');
 var config = require('./config.js');
+var functions = require('./functions.js');
 
 module.exports = function () {
 	var yesterday = moment().tz("America/Toronto").subtract(1, 'days');
@@ -124,8 +125,8 @@ module.exports = function () {
 							var prevPostID = "";
 							prevPostID = fs.readFileSync("previd", "utf-8");
 							reddit('/api/distinguish').post({ 'api_type': 'json', 'how': 'yes', 'id': newPostID }).then(function () {
-								reddit('/api/set_subreddit_sticky').post({ 'api_type': 'json', 'state': 'false', 'num': 2, 'id': prevPostID }).then(function () {
-									reddit('/api/set_subreddit_sticky').post({ 'api_type': 'json', 'state': 'true', 'num': 2, 'id': newPostID }).then(
+								reddit('/api/set_subreddit_sticky').post({ 'api_type': 'json', 'state': 'false', 'num': 2, 'id': functions.stripWhiteSpaceAndNewLines(prevPostID) }).then(function () {
+									reddit('/api/set_subreddit_sticky').post({ 'api_type': 'json', 'state': 'true', 'num': 2, 'id': functions.stripWhiteSpaceAndNewLines(newPostID) }).then(
 										function (response) {
 											var stream = fs.createWriteStream("previd");
 											stream.once('open', function (fd) {

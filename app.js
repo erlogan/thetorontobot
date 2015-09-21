@@ -1,6 +1,7 @@
 var moment = require('moment-timezone');
 var fs = require('fs');
 var dailyOverview = require('./dailyoverview.js');
+var functions = require('./functions.js');
 
 var today;
 var yesterday;
@@ -8,9 +9,9 @@ var yesterday;
 var redditPollingLoop = function () {
 	today = moment().tz("America/Toronto");
 	var utcDate = fs.readFileSync("yesterday", "utf-8");
-	yesterday = moment.utc(moment.unix(utcDate)).tz("America/Toronto");
+	yesterday = moment.utc(moment.unix(functions.stripWhiteSpaceAndNewLines(utcDate))).tz("America/Toronto");
 	if (today.isAfter(yesterday.tz("America/Toronto"), 'day')){
-		dailyOverview();
+		//dailyOverview();
 		console.log(moment.tz("America/Toronto").format() +  ': New Post Made!');
 	}
 	else
