@@ -125,22 +125,20 @@ module.exports = function () {
 							var prevPostID = "";
 							prevPostID = fs.readFileSync("previd", "utf-8");
 							reddit('/api/distinguish').post({ 'api_type': 'json', 'how': 'yes', 'id': newPostID }).then(function () {
-								reddit('/api/set_subreddit_sticky').post({ 'api_type': 'json', 'state': 'false', 'num': 2, 'id': functions.stripWhiteSpaceAndNewLines(prevPostID) }).then(function () {
-									reddit('/api/set_subreddit_sticky').post({ 'api_type': 'json', 'state': 'true', 'num': 2, 'id': functions.stripWhiteSpaceAndNewLines(newPostID) }).then(
-										function (response) {
-											var stream = fs.createWriteStream("previd");
-											stream.once('open', function (fd) {
-												stream.write(newPostID);
-												stream.end();
-											});
-											
-											var yesterstream = fs.createWriteStream("yesterday");
-											yesterstream.once('open', function (fd) {
-												yesterstream.write(moment.utc().format('X'));
-												yesterstream.end();
-											});
-										});
-								});
+                                reddit('/api/set_subreddit_sticky').post({ 'api_type': 'json', 'state': 'false', 'num': 2, 'id': functions.stripWhiteSpaceAndNewLines(newPostID) }).then(
+                                    function (response) {
+                                        var stream = fs.createWriteStream("previd");
+                                        stream.once('open', function (fd) {
+                                            stream.write(newPostID);
+                                            stream.end();
+                                        });
+                                        
+                                        var yesterstream = fs.createWriteStream("yesterday");
+                                        yesterstream.once('open', function (fd) {
+                                            yesterstream.write(moment.utc().format('X'));
+                                            yesterstream.end();
+                                        });
+                                    });
 							});
 
 						}
