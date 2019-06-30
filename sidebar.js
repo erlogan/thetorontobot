@@ -1,5 +1,6 @@
 var Snoocore = require('snoocore');
 var config = require('./config.js');
+var moment = require('moment-timezone');
 
 module.exports = function () {
     var reddit = new Snoocore({
@@ -20,7 +21,8 @@ module.exports = function () {
 
         posts.forEach(function (post) {
             postText += newLine;
-            postText += "1. [" + post.data.title + "](" + post.data.url + ")";
+            title = post.data.title.replace(/\$/,"$$$$")
+            postText += "1. [" + title + "](" + post.data.url + ")";
         });
 
         return postText + newLine;
@@ -45,6 +47,8 @@ module.exports = function () {
             function(slice){ 
                 data.description = data.description.replace(/(\[\]\(\/questions-start\)\n)[\s\S]*?(\n\[\]\(\/questions-end\))/m,"$1"+generatePostTable(slice.children)+"$2");
                 data.description = data.description.replace(/amp;/g,""); // workaround -- telling snoocore not to decode entities doesn't work apparently
+                console.log(moment().tz("America/Toronto").format() + ": Updating sidebar with: ");
+                console.log(generatePostTable(slice.children));
                 return reddit('/api/site_admin').post(data);
             }
         );
