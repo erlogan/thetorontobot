@@ -22,6 +22,7 @@ module.exports = function () {
         posts.forEach(function (post) {
             postText += newLine;
             title = post.data.title.replace(/\$/,"$$$$")
+            title = title.replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"');
             postText += "1. [" + title + "](" + post.data.url + ")";
         });
 
@@ -47,9 +48,12 @@ module.exports = function () {
             function(slice){ 
                 data.description = data.description.replace(/(\[\]\(\/questions-start\)\n)[\s\S]*?(\n\[\]\(\/questions-end\))/m,"$1"+generatePostTable(slice.children)+"$2");
                 data.description = data.description.replace(/amp;/g,""); // workaround -- telling snoocore not to decode entities doesn't work apparently
+                //data.description = data.description.replace(/[\u2018\u2019]/g, "'") .replace(/[\u201C\u201D]/g, '"');
                 console.log(moment().tz("America/Toronto").format() + ": Updating sidebar with: ");
                 console.log(generatePostTable(slice.children));
-                return reddit('/api/site_admin').post(data);
+                reddit('/api/site_admin').post(data).then(function(result){console.log(result)});
+                console.log("sidebar update complete");
+                return;
             }
         );
     });
