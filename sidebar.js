@@ -4,7 +4,7 @@ var moment = require('moment-timezone');
 
 module.exports = function () {
     var reddit = new Snoocore({
-        userAgent: '/u/thetorontobot TheTorontoBot@0.0.2',
+        userAgent: config.userAgent,
         oauth: {
             type: 'script',
         key: config.key,
