@@ -4,3 +4,6 @@ config.js
 test*
 yesterday
 previd
+/lib
+/lib64
+praw.ini
